@@ -1,0 +1,32 @@
+OPTIMIZATION ANALYZER — START HERE
+==================================
+
+IMPORTANT: Do not open app.py, index.html, or this README in Microsoft Word.
+This is a web application. Start it with the launcher below so the browser UI
+and the Python calculation engine are connected.
+
+WINDOWS (recommended)
+1. Extract the entire ZIP file to a normal folder (for example, Desktop).
+2. Open the extracted folder named "milestone3".
+3. Double-click START_APP_WINDOWS.bat.
+4. Wait while Python installs the required packages on the first run.
+5. Your browser should open at http://127.0.0.1:5000.
+6. Edit the function and interval on the left.
+   Change the function or interval, then click "Analyze".
+
+EXAMPLE TO TRY
+Function: x^2 - 4*x + 1
+Lower bound: -1
+Upper bound: 5
+Click Analyze. Then select a candidate under "Walk along the interval".
+
+IF THE APP DOES NOT OPEN
+- Keep the black terminal window open and read the error shown there.
+- Install Python 3.10 or newer from https://www.python.org/downloads/ if needed.
+- On Windows, select "Add Python to PATH" during installation.
+- If the browser does not open automatically, manually visit:
+  http://127.0.0.1:5000
+- Do not double-click static/index.html: the API needs the Flask server.
+
+STOPPING THE APP
+Click the terminal window and press Ctrl+C.

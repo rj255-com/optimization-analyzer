@@ -1,0 +1,18 @@
+id,name,function,lo,hi,exp_max_x,exp_max_value,exp_min_x,exp_min_value,exp_local_max,exp_local_min,check_local,expect,include_endpoints,tests
+1,Fenced field,x*(50 - x),0,50,25.000000,625.000000,,0.000000,25,,1,ok,1,"parabola, maximum inside"
+2,Open box,x*(12 - 2*x)^2,0,6,2.000000,128.000000,,0.000000,2,,1,ok,1,"cubic, x = 6 is an endpoint"
+3,Cylindrical can,2*pi*x^2 + 1000/x,1,10,1.000000,1006.283185,4.301270,348.734205,,4.301270,1,ok,1,minimum with pi and 1/x
+4,Profit,-0.5*x^2 + 80*x - 200,0,200,80.000000,3000.000000,200.000000,-4200.000000,80,,1,ok,1,decimal coefficients
+5,Cubic,x^3 - 3*x,-1.5,3,3.000000,18.000000,1.000000,-2.000000,-1,1,1,ok,1,local max and local min together
+6,Quartic,x^4 - 8*x^2,-3,3,,9.000000,,-16.000000,0,-2;2,1,ok,1,three critical points
+7,Sine,sin(x),0,6.283185307179586,1.570796,1.000000,4.712389,-1.000000,1.570796,4.712389,1,ok,1,trigonometric function
+8,x e^(-x),x*exp(-x),0,5,1.000000,0.367879,0.000000,0.000000,1,,1,ok,1,exponential function
+9,x ln x,x*ln(x),0.1,3,3.000000,3.295837,0.367879,-0.367879,,0.367879,1,ok,1,logarithm
+10,Bell curve,1/(1 + x^2),-3,3,0.000000,1.000000,,0.100000,0,,1,ok,1,rational function
+11,Inflection,x^3,-1,1,1.000000,1.000000,-1.000000,-1.000000,,,1,ok,1,f'(0)=0 but no extremum
+12,Exponential minus line,exp(x) - 3*x,0,3,3.000000,11.085537,1.098612,-0.295837,,1.098612,1,ok,1,"transcendental, solved exactly"
+13,Needs numerical solver,x^2 - 2*sin(x),0,3,3.000000,8.717760,0.739085,-0.800977,,0.739085,1,ok,1,f'(x)=0 has no closed form
+14,Corner point,abs(x - 1),-1,3,,2.000000,1.000000,0.000000,,,0,ok,1,minimum at a corner (f' undefined)
+15,Constant,5,0,1,,5.000000,,5.000000,,,0,ok,1,constant function
+16,Undefined on interval,1/x,-1,1,,,,,,,0,error,1,pole at x = 0 must be rejected
+17,Open interval,x*(50 - x),0,50,25.000000,625.000000,,,25,,1,ok,0,endpoints excluded
