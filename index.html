@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimization Analyzer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=STIX+Two+Text:ital,wght@0,500;0,700;1,500&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 32%27%3E%3Cpath d=%27M32 16C26 7 18 4 12 8C6 12 6 20 12 24C18 28 26 25 32 16C38 7 46 4 52 8C58 12 58 20 52 24C46 28 38 25 32 16Z%27 fill=%27none%27 stroke=%27%235CCFB6%27 stroke-width=%276%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="sp0"></div>
+<header class="top"><div class="brand"><svg class="logo" viewBox="0 0 64 32" aria-hidden="true"><defs><linearGradient id="lg" gradientUnits="userSpaceOnUse" x1="6" y1="0" x2="58" y2="0"><stop offset="0" stop-color="#5CCFB6"/><stop offset=".5" stop-color="#8DB4F4"/><stop offset="1" stop-color="#F4BE7A"/></linearGradient></defs><path id="lpath" pathLength="1" class="lpath" d="M32 16C26 7 18 4 12 8C6 12 6 20 12 24C18 28 26 25 32 16C38 7 46 4 52 8C58 12 58 20 52 24C46 28 38 25 32 16Z" fill="none" stroke="url(#lg)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><circle class="ldot" r="2.6"><animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#lpath"/></animateMotion></circle></svg><h1>Optimization Analyzer</h1></div><div class="hbtns"><button id="tourbtn" type="button">Guided tour</button><button id="theme" type="button"></button></div></header>
+<div class="shell">
+<nav class="rail" aria-label="Pages"><svg id="rp" aria-hidden="true"></svg><ol id="nav"></ol></nav>
+<main>
+
+<section class="page" id="overview">
+  <div class="hero">
+    <div class="hero-t">
+      <h2>Where is a function at its best, and how sure can we be?</h2>
+      <p>Type a function of one variable or two, with or without a constraint. The analyzer finds every turning point, classifies it, and re-checks the result with a second, independent solver.</p>
+      <div class="btns"><a class="btn primary" href="#analyzer">Start analyzing</a><a class="btn" href="#multi">Try two variables</a><a class="btn" href="#slides">Open the slides</a></div>
+      <p class="proof"><b id="npr">17</b> worked problems with known answers, checked live on the Dataset page.</p>
+    </div>
+    <figure class="card hero-g">
+      <svg id="hg" role="img" aria-label="A tangent line sliding along f(x) = x(12 − 2x)²"></svg>
+      <div class="hero-r"><span class="m">f(x) = x(12 − 2x)²</span><span id="hro"></span><span id="hflag" class="flag"></span></div>
+      <label class="sl">Drag along the curve<input id="hs" type="range" min="0" max="240" value="40"></label>
+    </figure>
+  </div>
+  <h3>What is inside</h3>
+  <div class="tiles">
+    <a class="tile" style="--c:var(--accent)" href="#analyzer"><b>One variable</b>Critical points, endpoints, and the second and first derivative tests.</a>
+    <a class="tile" style="--c:var(--max)" href="#multi"><b>Two variables</b>Hessian classification and Lagrange multipliers, drawn on a contour map.</a>
+    <a class="tile" style="--c:var(--end)" href="#dataset"><b>Checked twice</b>SymPy answers exactly and SciPy confirms the numbers independently.</a>
+    <a class="tile" style="--c:var(--min)" href="#slides"><b>Ready to present</b>A built-in slide deck that shows whatever you analyzed last.</a>
+  </div>
+  <h3>How one answer is built</h3>
+  <ol class="flow">
+    <li><b>Parse</b>Only x, y, numbers and approved functions are accepted.</li>
+    <li><b>Differentiate</b>SymPy gives the derivatives exactly.</li>
+    <li><b>Solve</b>Exact roots, or Brent’s method and multi-start solving when no closed form exists.</li>
+    <li><b>Classify</b>Second derivative test, first derivative test, or the Hessian.</li>
+    <li><b>Verify</b>SciPy searches on its own and must agree.</li>
+  </ol>
+  <h3>Try a worked problem</h3>
+  <div id="chips" class="chips"></div>
+</section>
+
+<section class="page" id="analyzer" hidden>
+  <div class="phead"><h2>Analyzer</h2><p class="lead">Build a function, pick an interval, and watch the graph redraw as you type. Press Analyze for the exact answer and every step of the working.</p></div>
+  <div class="bench">
+    <form id="form" class="card wb" autocomplete="off">
+      <div class="stp"><span class="n">1</span>Write the function</div>
+      <div class="fbar"><span class="fx">f(x) =</span><input id="fn" class="math" value="x*(12 - 2*x)^2" spellcheck="false" aria-label="Function f of x"></div>
+      <div class="keys" id="keys"></div>
+      <div class="stp"><span class="n">2</span>Choose the interval</div>
+      <div class="pair"><div><label for="lo">From x =</label><input id="lo" value="0" inputmode="decimal"></div><div><label for="hi">To x =</label><input id="hi" value="6" inputmode="decimal"></div></div>
+      <label class="tog"><input type="checkbox" id="ends" checked><span class="sw"></span>Include the endpoints</label>
+      <div class="stp"><span class="n">3</span>Solve it</div>
+      <button id="run" class="primary big" type="submit">Analyze</button>
+      <p id="err" class="err" role="alert" hidden></p>
+      <p class="hint" style="margin:0">Or start from a worked problem:</p>
+      <div class="chips" id="achips"></div>
+    </form>
+    <div class="card pv"><div class="pvh"><b>Live preview</b><span id="pvs"></span></div><svg id="pv" role="img" aria-label="Live preview of the function"></svg><p class="hint" style="margin:6px 12px 0">Markers show turning points estimated from the preview. The exact ones come from the analysis.</p></div>
+  </div>
+  <div id="res"></div>
+</section>
+
+<section class="page" id="graph" hidden>
+  <div class="phead"><h2>Graph</h2><p class="lead">See the function and its slope side by side. Slide the tangent and watch the slope reach zero at every turning point.</p></div><div id="graphBody"></div>
+</section>
+
+<section class="page" id="critical" hidden>
+  <div class="phead"><h2>Critical points</h2><p class="lead">Every candidate for a maximum or minimum, in order, and the exact reason each one counts.</p></div><div id="critBody"></div>
+</section>
+
+<section class="page" id="multi" hidden>
+  <div class="phead"><h2>Multivariable</h2><p class="lead">Functions of two variables, with or without a constraint.</p></div>
+  <p class="sub">Two variables. Leave the constraint empty to use the Hessian test, or enter g(x, y) = 0 to use Lagrange multipliers.</p>
+  <ol class="mstep"><li>Enter f and, if you like, a constraint</li><li>Explore the contour map</li><li>Read the points in the table</li></ol>
+  <form id="mform" class="card bar" autocomplete="off">
+    <div class="f-fn"><label for="mf">Function f(x, y)</label><input id="mf" class="math" value="x^3 - 3*x + y^2 - 4*y" spellcheck="false"></div>
+    <div><label for="mg">Constraint (optional)</label><input id="mg" class="math" placeholder="x^2 + y^2 = 1" spellcheck="false"></div>
+    <div><label for="mlo">Window from</label><input id="mlo" value="-3"></div>
+    <div><label for="mhi">to</label><input id="mhi" value="3"></div>
+    <button class="primary" type="submit">Analyze</button>
+    <p id="merr" class="err f-all" role="alert" hidden></p>
+  </form>
+  <div class="chips" id="mchips" style="margin-bottom:16px"></div>
+  <div id="mres"></div>
+</section>
+
+<section class="page" id="compare" hidden>
+  <div class="phead"><h2>Compare</h2><p class="lead">Put two functions on one graph and see which one wins.</p></div><div class="vs"><span class="va">A</span><span class="vx">VS</span><span class="vbb">B</span></div>
+  <form id="cform" class="card bar" autocomplete="off">
+    <div class="f-fn"><label for="fa"><i class="dot max"></i> Function A</label><input id="fa" class="math" value="x*(12 - 2*x)^2"></div>
+    <div class="f-fn"><label for="fb"><i class="dot end"></i> Function B</label><input id="fb" class="math" value="30*x - 2*x^2"></div>
+    <div><label for="clo">From x =</label><input id="clo" value="0"></div>
+    <div><label for="chi">To x =</label><input id="chi" value="6"></div>
+    <button class="primary" type="submit">Compare</button>
+    <p id="cerr" class="err f-all" role="alert" hidden></p>
+  </form>
+  <div id="cres"></div>
+</section>
+
+<section class="page" id="dataset" hidden>
+  <div class="phead"><h2>Dataset</h2><p class="lead">A test bench of problems whose answers are known in advance.</p></div>
+  <p class="sub">Every row is a problem with a known answer. Run one in the analyzer, or check all of them against the engine at once.</p>
+  <div class="btns"><button id="vall" class="btn primary" type="button">Check all problems</button><a class="btn" href="sample_dataset.csv" download>Download CSV</a><svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="rb" cx="22" cy="22" r="18"/><circle class="rf" id="rf" cx="22" cy="22" r="18" pathLength="100"/></svg><span id="vsum" class="vsum"></span></div>
+  <div class="card tw"><table id="dt"></table></div>
+</section>
+
+<section class="page" id="testing" hidden>
+  <div class="phead"><h2>Testing</h2><p class="lead">Stress tests on hard inputs and constrained problems. Every answer is checked against an independent brute-force reference, and the numbers below were measured before and after optimization.</p></div>
+  <div id="testBody"></div>
+</section>
+
+<section class="page" id="slides" hidden>
+  <div class="phead"><h2>Slides</h2><p class="lead">A ready-made presentation that always shows your latest result.</p></div>
+  <div class="deck card" id="deck"></div>
+  <div class="dctl"><button id="sp" class="btn" type="button">Previous</button><div class="prog"><i id="pb"></i></div><div id="dots" class="dots"></div><span id="sc"></span><button id="sn" class="btn primary" type="button">Next</button><button id="sa" class="btn" type="button">Auto-play</button><button id="sf" class="btn" type="button">Full screen</button></div>
+</section>
+
+</main>
+</div>
+<div id="tour" hidden><div class="spot"></div><div class="tip2" role="dialog" aria-live="polite"><h4 id="tt"></h4><p id="td"></p><div class="tb"><button id="tskip" type="button">Skip</button><span id="tn"></span><button id="tback" type="button">Back</button><button id="tnext" type="button" class="primary">Next</button></div></div></div>
+<script src="app.js"></script>
+</body>
+</html>
