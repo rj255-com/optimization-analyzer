@@ -197,7 +197,7 @@ $("#cform").onsubmit = async e => {
 };
 
 /* ---------- dataset page ---------- */
-const csv = fetch("sample_dataset.csv").then(r => r.text()).then(t => {
+const csv = fetch("/sample_dataset.csv") .then(r => {     if (!r.ok) {         throw new Error(`Dataset loading failed: HTTP ${r.status}`);     }     return r.text(); }) .then(t => {
   DATA = t.trim().split(/\r?\n/).slice(1).map(l => { const c = l.split(","); return { id: c[0], name: c[1], f: c[2], lo: c[3], hi: c[4], emax: c[6], emin: c[8], en: c[13] !== "0", ok: c[12] === "ok", tests: l.split('"')[1] || "" }; });
   $("#npr").textContent = DATA.length; const s0 = $("#st0"); if (s0) s0.dataset.v = DATA.length; $("#achips").innerHTML = DATA.filter(d => d.ok).slice(0, 9).map(d => `<button type="button" data-i="${d.id}">${d.name}</button>`).join(""); $$("#achips button").forEach(b => b.onclick = () => { const d = DATA.find(z => z.id === b.dataset.i); load(d.f, d.lo, d.hi, d.en); }); $("#chips").innerHTML = DATA.filter(d => d.ok).slice(0, 8).map(d => `<button type="button" data-i="${d.id}">${d.name}</button>`).join("");
   $$("#chips button").forEach(b => b.onclick = () => { const d = DATA.find(z => z.id === b.dataset.i); load(d.f, d.lo, d.hi, d.en); });
