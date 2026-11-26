@@ -38,6 +38,16 @@ def health():
     return jsonify({"ok": True})
 
 
+@app.route("/test_summary.json")
+def test_summary():
+    return send_from_directory(
+        app.root_path,
+        "test_summary.json",
+        mimetype="application/json"
+    )
+
+
+
 @app.route("/sample_dataset.csv")
 def sample_dataset():
     return send_from_directory(
