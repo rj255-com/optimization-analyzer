@@ -487,7 +487,7 @@ function explainMulti(r) {
 /* ---------- testing page ---------- */
 async function renderTesting() {
   const el = $("#testBody"); if (el.dataset.ok) return; let d;
-  try { d = await (await fetch("test_summary.json")).json(); } catch (e) { el.innerHTML = '<div class="card"><p>No test results found yet. Run <b>python make_report.py</b> in the project folder.</p></div>'; return; }
+  try { const response = await fetch("/test_summary.json");  if (!response.ok) {     throw new Error(`HTTP ${response.status}: Could not load test results`); }  d = await response.json(); } catch (e) { el.innerHTML = '<div class="card"><p>No test results found yet. Run <b>python make_report.py</b> in the project folder.</p></div>'; return; }
   el.dataset.ok = 1; const B = d.baseline, O = d.optimized, S = [["random", "Random problems"], ["hard", "Hard cases"], ["multi", "Constrained, two variables"]];
   const sum = (X, k) => S.reduce((a, [s]) => a + X[s][k], 0), nTests = O.dataset.n + sum(O, "n") + O.concurrency.requests, faster = Math.round((1 - sum(O, "total_s") / sum(B, "total_s")) * 100);
   const pb = (lab, a, b) => { const m = Math.max(a, b) || 1; return `<div class="hb"><b>${lab}</b><div class="bt"><span class="bA" data-w="${Math.max(16, a / m * 100)}">${a.toFixed(2)} s before</span></div><div class="bt"><span class="bB win" data-w="${Math.max(16, b / m * 100)}">${b.toFixed(2)} s after</span></div></div>`; };
