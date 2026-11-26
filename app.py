@@ -38,6 +38,16 @@ def health():
     return jsonify({"ok": True})
 
 
+@app.route("/sample_dataset.csv")
+def sample_dataset():
+    return send_from_directory(
+        app.root_path,
+        "sample_dataset.csv",
+        mimetype="text/csv"
+    )
+
+
+
 @app.route("/api/analyze", methods=["POST"])
 def api_analyze():
     data = request.get_json(silent=True) or {}
